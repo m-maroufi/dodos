@@ -1,9 +1,10 @@
 import { supabase } from "@/supabase/supabaseClient";
+import type { Session } from "@supabase/supabase-js";
 import { createContext, useEffect, useState } from "react";
 
 type AuthResult = { sucsses: true; data: any } | { sucsses: false; error: any };
 type AuthContextType = {
-  session: any; // می‌تونی اینو دقیق‌تر تعریف کنی اگه ساختار session مشخصه
+  session: Session | null; // می‌تونی اینو دقیق‌تر تعریف کنی اگه ساختار session مشخصه
   signUp: (payload: PayloadType) => Promise<AuthResult>;
   signIn: (payload: PayloadType) => Promise<AuthResult>;
   signOut: () => Promise<void>;
@@ -30,7 +31,7 @@ type PayloadType = {
 export default function AuthContextProvider({
   children,
 }: AuthContextProviderProps) {
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const signUp = async (payload: PayloadType): Promise<AuthResult> => {
     // Implement sign-up logic here
     const { data, error } = await supabase.auth.signUp({
