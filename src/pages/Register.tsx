@@ -5,12 +5,10 @@ import {
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router";
 import type z from "zod";
 import { useForm } from "react-hook-form";
@@ -20,7 +18,6 @@ import { registerFormSchema as formSchema } from "@/lib/authShema";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,7 +26,7 @@ import {
 import { useContext } from "react";
 import { authContext } from "@/context/authContext";
 import { Loader2Icon } from "lucide-react";
-import { sleep } from "@/lib/utils";
+import { sleep } from "@/lib/helper";
 function Register() {
   const { signUp } = useContext(authContext);
   const navigate = useNavigate();
