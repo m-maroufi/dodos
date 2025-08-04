@@ -177,8 +177,14 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-light;
+    @apply bg-background text-foreground font-mikhak font-light;
     letter-spacing: var(--tracking-normal);
     direction: rtl;
+    background-image: url("./assets/images/logo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-clip: content-box;
+    backdrop-filter: blur(10px);
+    background-attachment: fixed;
   }
 }
