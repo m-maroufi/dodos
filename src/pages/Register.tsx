@@ -12,24 +12,35 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router";
 
-function Login() {
+function Register() {
   return (
     <div className="h-screen w-full grid place-items-center">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="font-mikhak font-bold">
-            ورود به حساب کاربری
+            ایجاد حساب کاربری
           </CardTitle>
-          <CardDescription>ایمیل و کلمه عبور خود را وارد کنید</CardDescription>
+          <CardDescription className="text-xs text-muted-foreground">
+            برای شروع حساب کاربری خود را ایجاد کنید
+          </CardDescription>
           <CardAction>
-            <Link to={"/register"}>
-              <Button variant="link">ایجاد حساب</Button>
+            <Link to={"/login"}>
+              <Button variant="link">ورود به حساب</Button>
             </Link>
           </CardAction>
         </CardHeader>
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="email">نام شما </Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="مثال: محمد"
+                  required
+                />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">ایمیل </Label>
                 <Input
@@ -42,26 +53,26 @@ function Login() {
               <div className="grid gap-2">
                 <div className="flex items-center justify-between w-full">
                   <Label htmlFor="password">کلمه عبور</Label>
-                  <a
-                    href="#"
-                    className="mr-auto inline-block text-xs underline-offset-4 hover:underline"
-                  >
-                    فراموشی کلمه عبور؟
-                  </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  placeholder="شامل  5 کارکتر یا بیشتر"
+                />
               </div>
             </div>
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
           <Button type="submit" className="w-full cursor-pointer font-semibold">
-            ورود به حساب کاربری
+            ایجاد حساب کاربری
           </Button>
+          <button></button>
         </CardFooter>
       </Card>
     </div>
   );
 }
 
-export default Login;
+export default Register;
