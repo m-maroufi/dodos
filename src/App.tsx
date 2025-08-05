@@ -6,12 +6,20 @@ import Register from "./pages/Register";
 import { AnimatePresence } from "motion/react";
 import Dashborord from "./pages/Dashborord";
 import AuthContextProvider from "./context/authContext";
+import { Toaster } from "sonner";
+
 function App() {
   const location = useLocation();
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <Toaster
+        richColors
+        position="top-center"
+        dir="rtl"
+        className="font-bold"
+      />
       <AnimatePresence mode="sync">
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-4 left-4 z-50">
           <ModeToggle />
         </div>
         <AuthContextProvider>

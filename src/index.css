@@ -187,4 +187,7 @@
     backdrop-filter: blur(10px);
     background-attachment: fixed;
   }
+  [data-sonner-toast][data-styled="true"] [data-title] {
+    @apply !font-[900];
+  }
 }

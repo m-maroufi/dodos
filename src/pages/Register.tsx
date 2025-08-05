@@ -27,13 +27,14 @@ import { useContext } from "react";
 import { authContext } from "@/context/authContext";
 import { Loader2Icon } from "lucide-react";
 import { sleep } from "@/lib/helper";
+import { toast } from "sonner";
 function Register() {
   const { signUp } = useContext(authContext);
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
-    reValidateMode: "onSubmit",
+    reValidateMode: "onChange",
     shouldUnregister: true,
     defaultValues: {
       name: "",
@@ -51,13 +52,16 @@ function Register() {
         name: values.name,
       });
       if (result.sucsses) {
+        toast.success("با موفقیت وارد شدید🎉", {
+          description: "به پنل خوش اومدی عزیز دل!",
+          duration: 3000,
+        });
+        await sleep(300);
         navigate("/dashboard");
+        return;
       } else {
         console.error("Registration failed:", result.error);
-        form.setError("email", {
-          type: "register",
-          message: result.error as string,
-        });
+        throw new Error("خطا در ثبت اطلاعات رخ داد.");
       }
       // Handle errors here
     } catch (error) {
