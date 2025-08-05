@@ -14,7 +14,7 @@ import type z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { registerFormSchema as formSchema } from "@/lib/authShema";
+import { registerFormSchema as formSchema } from "@/lib/validateShema";
 import {
   Form,
   FormControl,

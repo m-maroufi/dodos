@@ -1,15 +1,19 @@
 import ComplexDropdownMenu from "@/components/customized/dropdown-menu/dropdown-menu-07";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { authContext } from "@/context/authContext";
 import { sleep } from "@/lib/helper";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-const tags = Array.from({ length: 50 }).map(
-  (_, i, a) => `v1.2.0-beta.${a.length - i}`
-);
+import { Button } from "@/components/ui/button";
+import { CirclePlus, Flag } from "lucide-react";
+import AddNewTask from "@/components/AddNewTask";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { DropdownMenu } from "@/components/ui/dropdown-menu";
+import DropdownMenuWithSubMenu from "@/components/customized/dropdown-menu/dropdown-menu-05";
+
 const Dashborord = () => {
   const { session, signOut } = useContext(authContext);
   const navigate = useNavigate();
@@ -45,44 +49,54 @@ const Dashborord = () => {
           />
         </CardContent>
       </Card>
-      <div className="container mx-auto">
-        <Card className="w-full h-[calc(100vh-7rem)] grid grid-cols-3">
-          <div className="completed border-l  overflow-hidden">
-            <div className="title">
-              <h1 className="scroll-m-20 text-center text-xl font-extrabold tracking-tight text-balance">
-                کارهای انجام شده
-              </h1>
-              <Separator className="my-4" />
-            </div>
-            <ScrollArea className="h-[calc(100vh-7rem)] w-full">
-              <div className="p-4">
-                {tags.map((tag) => (
-                  <React.Fragment key={tag}>
-                    <div className="text-sm">{tag}</div>
-                    <Separator className="my-2" />
-                  </React.Fragment>
-                ))}
-              </div>
-            </ScrollArea>
-          </div>
-          <div className="completed border-l">
-            <div className="title">
-              <h1 className="scroll-m-20 text-center text-xl font-extrabold tracking-tight text-balance">
-                در حال انجام
-              </h1>
-              <Separator className="my-4" />
-            </div>
-          </div>
-          <div className="completed border-l">
-            <div className="title">
-              <h1 className="scroll-m-20 text-center text-xl font-extrabold tracking-tight text-balance">
-                کارهای انجام شده
-              </h1>
-              <Separator className="my-4" />
-            </div>
-          </div>
-        </Card>
+      <div className="sidebar fixed w-fit right-0 top-1/2 z-20 h-1/2 bg-accent/40 -translate-y-1/2 rounded-l-lg py-2 px-4">
+        <ul className="flex flex-col gap-3">
+          <li>
+            <AddNewTask />
+          </li>
+          <li>
+            <Button variant="destructive" size="sm">
+              <CirclePlus /> برای امروز
+            </Button>
+          </li>
+          <li>
+            <Button variant="secondary" size="sm">
+              <CirclePlus /> انجام شده ها
+            </Button>
+          </li>
+        </ul>
       </div>
+      <Card className="max-w-4xl m-auto">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold">برای امروز</CardTitle>
+          <Separator className="my-2" />
+        </CardHeader>
+        <CardContent className="py-0">
+          <ScrollArea className="h-[calc(100vh-16rem)] w-full" dir="rtl">
+            <ul className="px-4">
+              <li className="odd:bg-accent/40 px-2">
+                <div className="text-sm flex items-center justify-between">
+                  <div className="right flex items-center gap-3">
+                    <Badge variant="destructive">اولویت زیاد</Badge>
+                    <div>
+                      <h1 className="scroll-m-20 text-lg font-extrabold tracking-tight text-balance">
+                        خریدبرای خانه
+                      </h1>
+                      <p className="leading-7 [&:not(:first-child)]:mt-0 font-medium">
+                        خرید ماست و پنیر و سبزی
+                      </p>
+                    </div>
+                  </div>
+                  <div className="left pl-5">
+                    <DropdownMenuWithSubMenu />
+                  </div>
+                </div>
+                <Separator className="my-2" />
+              </li>
+            </ul>
+          </ScrollArea>
+        </CardContent>
+      </Card>
     </div>
   );
 };
