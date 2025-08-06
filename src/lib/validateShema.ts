@@ -41,5 +41,9 @@ export const addTodoFormShema = z.object({
     .refine((val) => val !== "", {
       message: "لطفاً وضعیت را انتخاب کنید",
     }),
-  due_date: z.string("تاریخ را انتخاب کنید."),
+  due_date: z
+    .number("لطفا تاریخ انتخاب کنید")
+    .refine((val) => val !== undefined && !isNaN(val), {
+      message: "لطفاً یک تاریخ معتبر انتخاب کنید.",
+    }),
 });

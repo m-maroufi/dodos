@@ -7,7 +7,7 @@ const Loading = () => {
   const { loading } = useContext(authContext);
   useEffect(() => {
     const timer = setTimeout(() => setProgress(66), 500);
-    if (!Loading) {
+    if (!loading) {
       setProgress(100);
       return () => clearTimeout(timer);
     }

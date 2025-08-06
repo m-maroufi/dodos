@@ -9,3 +9,8 @@ export function getInitials(fullName?: string) {
   const last = parts[1]?.[0] || "";
   return last ? `${first} ${last}` : `${first}`;
 }
+export const statusMap: Record<string, string> = {
+  low: "کم",
+  medium: "متوسط",
+  high: "زیاد",
+};

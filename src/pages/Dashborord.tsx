@@ -1,21 +1,26 @@
 import ComplexDropdownMenu from "@/components/customized/dropdown-menu/dropdown-menu-07";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { authContext } from "@/context/authContext";
-import { sleep } from "@/lib/helper";
+import { sleep, statusMap } from "@/lib/helper";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { CirclePlus, Flag } from "lucide-react";
+import { CirclePlus } from "lucide-react";
 import AddNewTask from "@/components/AddNewTask";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import DropdownMenuWithSubMenu from "@/components/customized/dropdown-menu/dropdown-menu-05";
+import { useTodos, type Todo } from "@/hooks/useTodos";
+import TodoList from "@/components/TodoList";
 
 const Dashborord = () => {
   const { session, signOut } = useContext(authContext);
+  const { todos, loading, refetch } = useTodos();
+  useEffect(() => {
+    console.log("todos updated", todos);
+  }, [todos]);
   const navigate = useNavigate();
   const logOutHandler = async () => {
     const { sucsses } = await signOut();
@@ -38,7 +43,6 @@ const Dashborord = () => {
       navigate("/login", { replace: true });
     }
   }, [session, navigate]);
-
   return (
     <div className="min-h-screen backdrop-blur-3xl pt-20">
       <Card className="user-menu fixed top-4 right-6 bg-accent p-2">
@@ -52,7 +56,7 @@ const Dashborord = () => {
       <div className="sidebar fixed w-fit right-0 top-1/2 z-20 h-1/2 bg-accent/40 -translate-y-1/2 rounded-l-lg py-2 px-4">
         <ul className="flex flex-col gap-3">
           <li>
-            <AddNewTask />
+            <AddNewTask onSuccess={refetch} />
           </li>
           <li>
             <Button variant="destructive" size="sm">
@@ -73,27 +77,7 @@ const Dashborord = () => {
         </CardHeader>
         <CardContent className="py-0">
           <ScrollArea className="h-[calc(100vh-16rem)] w-full" dir="rtl">
-            <ul className="px-4">
-              <li className="odd:bg-accent/40 px-2">
-                <div className="text-sm flex items-center justify-between">
-                  <div className="right flex items-center gap-3">
-                    <Badge variant="destructive">اولویت زیاد</Badge>
-                    <div>
-                      <h1 className="scroll-m-20 text-lg font-extrabold tracking-tight text-balance">
-                        خریدبرای خانه
-                      </h1>
-                      <p className="leading-7 [&:not(:first-child)]:mt-0 font-medium">
-                        خرید ماست و پنیر و سبزی
-                      </p>
-                    </div>
-                  </div>
-                  <div className="left pl-5">
-                    <DropdownMenuWithSubMenu />
-                  </div>
-                </div>
-                <Separator className="my-2" />
-              </li>
-            </ul>
+            <TodoList todos={todos} loading={loading} />
           </ScrollArea>
         </CardContent>
       </Card>
