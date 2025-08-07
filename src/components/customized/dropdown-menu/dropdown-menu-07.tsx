@@ -1,28 +1,15 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Bolt,
-  ExternalLink,
-  Filter,
-  LogIn,
-  LogOut,
-  Rocket,
-  Settings2,
-  User,
-} from "lucide-react";
+
 import type { Session } from "@supabase/supabase-js";
 import { getInitials } from "@/lib/helper";
+import { LogOut } from "lucide-react";
 
 type UserMenuType = {
   session: Session | null;

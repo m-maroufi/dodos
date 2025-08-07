@@ -18,11 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Calendar as CalendarIcon,
-  CirclePlus,
-  Loader2Icon,
-} from "lucide-react";
+import { CirclePlus, Loader2Icon } from "lucide-react";
 import {
   Select,
   SelectItem,
