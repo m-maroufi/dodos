@@ -5,17 +5,32 @@ import { sleep } from "@/lib/helper";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { CirclePlus } from "lucide-react";
 import AddNewTask from "@/components/AddNewTask";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useTodos } from "@/hooks/useTodos";
 import TodoList from "@/components/TodoList";
+import {
+  PrioritySelection,
+  StatusSelection,
+} from "@/components/FilterActionButton";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 
 const Dashborord = () => {
   const { session, signOut } = useContext(authContext);
-  const { todos, loading, refetch } = useTodos();
+  const {
+    todos,
+    loading,
+    refetch,
+    statusFilter,
+    statusFiltering,
+    priorityFilter,
+    priorityFiltering,
+    dateFilter,
+    dateFiltering,
+  } = useTodos();
   useEffect(() => {
     console.log("todos updated", todos);
   }, [todos]);
@@ -51,26 +66,56 @@ const Dashborord = () => {
           />
         </CardContent>
       </Card>
-      <div className="sidebar fixed w-fit right-0 top-1/2 z-20 h-1/2 bg-accent/40 -translate-y-1/2 rounded-l-lg py-2 px-4">
+      <div className="sidebar fixed w-[180px] right-0 top-1/2 z-20 h-1/2 bg-accent/40 -translate-y-1/2 rounded-l-lg py-2 px-4">
         <ul className="flex flex-col gap-3">
           <li>
             <AddNewTask onSuccess={refetch} />
           </li>
+          <Separator className="my-2" />
           <li>
-            <Button variant="destructive" size="sm">
-              <CirclePlus /> برای امروز
-            </Button>
-          </li>
-          <li>
-            <Button variant="secondary" size="sm">
-              <CirclePlus /> انجام شده ها
-            </Button>
+            <h3 className="font-bold text-xs">فیلتر بر اساس: </h3>
+            <Separator className="my-4" />
+            <div className="pr-2">
+              <span className="font-medium text-[12px] block mb-1">
+                انتخاب تاریخ :
+              </span>
+              <DatePicker
+                format="DD - MMMM  YYYY"
+                value={dateFilter ? new Date(dateFilter) : ""}
+                onChange={(date) => {
+                  if (date) {
+                    const timestamp = date.toDate().getTime(); // تبدیل به timestamp
+                    dateFiltering(timestamp);
+                  } else {
+                    dateFiltering(Date.now()); // اگر تاریخ انتخاب نشد، به تاریخ فعلی برگردان
+                  }
+                }}
+                calendar={persian}
+                locale={persian_fa}
+                containerStyle={{ width: "100%" }}
+                calendarPosition="bottom-right"
+                inputClass="w-full h-10 px-3 rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                placeholder="تاریخ را انتخاب کنید"
+              />
+            </div>
           </li>
         </ul>
       </div>
-      <Card className="max-w-4xl m-auto">
+      <Card className="max-w-4xl m-auto mr-[300px]">
         <CardHeader>
-          <CardTitle className="text-xl font-bold">برای امروز</CardTitle>
+          <div className="flex justify-between">
+            <CardTitle className="text-xl font-bold">برای امروز</CardTitle>
+            <div className="filter flex items-center gap-3">
+              <StatusSelection
+                status={statusFilter}
+                statusFiltering={statusFiltering}
+              />
+              <PrioritySelection
+                priorityFiltering={priorityFiltering}
+                priority={priorityFilter}
+              />
+            </div>
+          </div>
           <Separator className="my-2" />
         </CardHeader>
         <CardContent className="py-0">

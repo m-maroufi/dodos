@@ -1,4 +1,8 @@
-import { getTodos } from "@/supabase/api";
+import {
+  getTodos,
+  type PriorityFilter,
+  type StatusFilter,
+} from "@/supabase/api";
 import { useEffect, useState } from "react";
 
 export type Todo = {
@@ -17,11 +21,13 @@ export const useTodos = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshIndex, setRefreshIndex] = useState(0);
-
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>("all");
+  const [dateFilter, setDateFilter] = useState<number>(Date.now());
   const fetchTodo = async () => {
     setLoading(true);
     setError(null);
-    const result = await getTodos();
+    const result = await getTodos(statusFilter, priorityFilter, dateFilter);
 
     if (result.success) {
       console.log("refetch", result.data);
@@ -34,9 +40,23 @@ export const useTodos = () => {
 
   useEffect(() => {
     fetchTodo();
-  }, [refreshIndex]);
+  }, [refreshIndex, statusFilter, priorityFilter, dateFilter]); // رفرش می‌کنه وقتی refreshIndex یا statusFilter تغییر کنه
   // این تابع برای رفرش دستی بیرون داده می‌شه
   const refetch = () => setRefreshIndex((prev) => prev + 1);
-
-  return { todos, refetch, loading, error };
+  const statusFiltering = (status: StatusFilter) => setStatusFilter(status);
+  const priorityFiltering = (priority: PriorityFilter) =>
+    setPriorityFilter(priority);
+  const dateFiltering = (date: number) => setDateFilter(date);
+  return {
+    todos,
+    refetch,
+    loading,
+    error,
+    statusFiltering,
+    statusFilter,
+    priorityFilter,
+    priorityFiltering,
+    dateFilter,
+    dateFiltering,
+  };
 };

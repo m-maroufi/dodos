@@ -1,6 +1,8 @@
 import type { addTodoFormShema } from "@/lib/validateShema";
 import type z from "zod";
 import { supabase } from "./supabaseClient";
+import dayjs from "dayjs";
+
 type TaskResult = { success: true; data: any } | { success: false; error: any };
 export const createNewTask = async (
   todo: z.infer<typeof addTodoFormShema>
@@ -33,8 +35,13 @@ export const createNewTask = async (
     return { success: false, error: "خطا در ثبت اطلاعات" };
   }
 };
-
-export const getTodos = async (): Promise<TaskResult> => {
+export type StatusFilter = "done" | "doing" | "pending" | "all";
+export type PriorityFilter = "low" | "medium" | "high" | "all";
+export const getTodos = async (
+  status: StatusFilter,
+  priority: PriorityFilter,
+  date?: number
+): Promise<TaskResult> => {
   try {
     const {
       data: { user },
@@ -44,18 +51,30 @@ export const getTodos = async (): Promise<TaskResult> => {
       return { success: false, error: "کاربر احراز نشده است." };
     }
 
-    // user is ready
-    const { data, error } = await supabase
-      .from("todos")
-      .select("*")
-      .eq("user_id", user.id);
+    let query = supabase.from("todos").select("*").eq("user_id", user.id);
+    console.log("Filter params:", { status, priority, date });
+    // اگر وضعیت مشخص شده غیر از "all" بود، فیلترش کن
+    if (status !== "all") {
+      query = query.eq("status", status);
+    }
+    if (priority !== "all") {
+      query = query.eq("priority", priority);
+    }
+    if (date) {
+      const startOfDay = dayjs(date).startOf("day").toISOString();
+      const endOfDay = dayjs(date).endOf("day").toISOString();
+
+      query = query.gte("due_date", startOfDay).lte("due_date", endOfDay);
+    }
+    const { data, error } = await query;
 
     if (error) {
       return { success: false, error: "خطا بارگزاری اطلاعات." };
     }
+
     return {
       success: true,
-      data: data,
+      data,
     };
   } catch (error) {
     return { success: false, error: "خطا بارگزاری اطلاعات." };
