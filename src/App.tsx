@@ -7,11 +7,12 @@ import { AnimatePresence } from "motion/react";
 import Dashborord from "./pages/Dashborord";
 import AuthContextProvider from "./context/authContext";
 import { Toaster } from "sonner";
+import { DateTimeDisplay } from "./components/DateTimeDisplay";
 
 function App() {
   const location = useLocation();
   return (
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Toaster
         richColors
         position="top-center"
@@ -21,6 +22,9 @@ function App() {
       <AnimatePresence mode="sync">
         <div className="fixed top-4 left-4 z-50">
           <ModeToggle />
+        </div>
+        <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50">
+          <DateTimeDisplay />
         </div>
         <AuthContextProvider>
           <Routes location={location} key={location.pathname}>

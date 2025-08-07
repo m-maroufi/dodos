@@ -37,7 +37,7 @@ import type z from "zod";
 import { addTodoFormShema } from "@/lib/validateShema";
 
 import { useState } from "react";
-
+import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
@@ -173,6 +173,7 @@ const AddNewTask = ({ onSuccess }: Props) => {
                     <DatePicker
                       format="DD - MMMM  YYYY"
                       minDate={new Date()}
+                      className="green"
                       value={field.value ? new Date(field.value) : ""}
                       onChange={(date) => {
                         if (date) {
