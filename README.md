@@ -1,69 +1,112 @@
-# React + TypeScript + Vite
+# ✅ اپلیکیشن تودو لیست — مدیریت وظایف با رابط کاربری مدرن، تاریخ شمسی و Supabase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+اپلیکیشنی ساده، سریع و واکنش‌گرا برای مدیریت وظایف روزانه با قابلیت‌هایی مانند:
 
-Currently, two official plugins are available:
+- ورود و ثبت‌نام کاربران
+- افزودن، ویرایش و حذف وظایف
+- فیلتر وظایف بر اساس وضعیت انجام
+- نمایش تاریخ‌ها به صورت هجری شمسی
+- ذخیره‌سازی ابری داده‌ها با استفاده از Supabase
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ✨ امکانات کلیدی
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **احراز هویت کاربران**
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  - ثبت‌نام و ورود با ایمیل و رمز عبور از طریق Supabase
+  - مدیریت نشست کاربر (Session)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **مدیریت وظایف (Todos)**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+  - افزودن، ویرایش و حذف وظایف
+  - تغییر وضعیت انجام‌شده / انجام‌نشده
+  - نمایش تاریخ‌ها به‌صورت شمسی
+
+- **فیلتر وظایف**
+
+  - نمایش همه وظایف
+  - فقط انجام‌شده‌ها
+  - فقط انجام‌نشده‌ها
+
+- **ناوبری صفحات با React Router**
+  - صفحات مجزا برای ورود، ثبت‌نام و داشبورد
+
+---
+
+## 🧰 تکنولوژی‌های استفاده‌شده
+
+| ابزار / کتابخانه                                       | کاربرد                                 |
+| ------------------------------------------------------ | -------------------------------------- |
+| [pnpm](https://pnpm.io)                                | مدیریت پکیج سبک و سریع                 |
+| [Vite](https://vitejs.dev)                             | ابزار توسعه سریع برای React            |
+| [React Router](https://reactrouter.com)                | مدیریت مسیرها در اپلیکیشن چندصفحه‌ای   |
+| [Tailwind CSS](https://tailwindcss.com)                | طراحی سریع رابط کاربری                 |
+| [ShadCN UI](https://ui.shadcn.dev)                     | کامپوننت‌های آماده، مدرن و انعطاف‌پذیر |
+| [jalali-moment](https://github.com/jalaali/jalaali-js) | نمایش تاریخ به شمسی                    |
+| [Supabase](https://supabase.com)                       | دیتابیس، احراز هویت و API ابری         |
+
+---
+
+## ⚙️ نحوه نصب و اجرای پروژه
+
+### ۱. نصب `pnpm` (در صورت نیاز)
+
+اگر pnpm را نصب ندارید، با دستور زیر نصب کنید:
+
+```bash
+npm install -g pnpm
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### ۲. نصب وابستگی‌ها
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm install
 ```
+
+### ۳. ایجاد فایل `.env`
+
+در ریشه پروژه یک فایل `.env` با مقادیر زیر ایجاد کنید:
+
+```env
+VITE_SUPABASE_URL=لینک پروژه Supabase شما
+VITE_SUPABASE_ANON_KEY=کلید عمومی Supabase شما
+```
+
+### ۴. اجرای پروژه
+
+```bash
+pnpm dev
+```
+
+---
+
+## 📁 ساختار پوشه‌های پروژه
+
+```bash
+src/
+├── components/        # کامپوننت‌های قابل استفاده مجدد
+├── pages/             # صفحات اصلی مانند Login، Signup، Dashboard
+├── router/            # پیکربندی مسیرها با React Router
+├── hooks/             # هوک‌های سفارشی مثل useTodos
+├── lib/               # توابع و ابزارهای کمکی (مثلاً تبدیل تاریخ)
+├── styles/            # استایل‌های کلی پروژه (Tailwind)
+├── supabase/          # مدیریت ارتباط با Supabase (auth, todos, client)
+```
+
+---
+
+## ✅ TODO آینده (پیشنهاد برای توسعه)
+
+- افزودن دسته‌بندی برای وظایف
+- پشتیبانی از drag & drop برای مرتب‌سازی وظایف
+- امکان تعیین یادآور (reminder)
+- حالت آفلاین و ذخیره موقت محلی
+
+---
+
+## 💬 مشارکت و بازخورد
+
+در صورت مشاهده باگ یا داشتن پیشنهاد، لطفاً در بخش Issues پروژه آن را ثبت کنید یا Pull Request ارسال نمایید.
+
+---
