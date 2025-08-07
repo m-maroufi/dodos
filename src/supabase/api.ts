@@ -1,9 +1,7 @@
 import type { addTodoFormShema } from "@/lib/validateShema";
 import type z from "zod";
 import { supabase } from "./supabaseClient";
-
 type TaskResult = { success: true; data: any } | { success: false; error: any };
-
 export const createNewTask = async (
   todo: z.infer<typeof addTodoFormShema>
 ): Promise<TaskResult> => {
@@ -61,5 +59,50 @@ export const getTodos = async (): Promise<TaskResult> => {
     };
   } catch (error) {
     return { success: false, error: "خطا بارگزاری اطلاعات." };
+  }
+};
+
+type TodoUpdate = {
+  id: string;
+  title?: string;
+  description?: string;
+  due_date?: number;
+  status?: "pending" | "doing" | "done" | "";
+  priority?: "low" | "medium" | "high" | "";
+};
+export const editTodo = async (updates: TodoUpdate): Promise<TaskResult> => {
+  try {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return { success: false, error: "کاربر احراز نشده است" };
+    }
+    const { id, ...rest } = updates;
+
+    // ✅ نرمال‌سازی داده قبل از ارسال به Supabase
+    const normalizedTodo = {
+      ...rest,
+      due_date: updates.due_date ? new Date(updates.due_date) : new Date(),
+    };
+
+    const { data, error } = await supabase
+      .from("todos")
+      .update(normalizedTodo)
+      .eq("id", id)
+      .eq("user_id", user.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.log("api", error);
+      return { success: false, error: "خطا در عملیات" };
+    }
+
+    return { success: true, data };
+  } catch (err) {
+    return { success: false, error: "عملیات با شکست مواجه شد" };
   }
 };

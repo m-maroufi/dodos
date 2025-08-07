@@ -6,9 +6,10 @@ import { Separator } from "./ui/separator";
 type ProsType = {
   todos: Todo[] | null;
   loading: boolean;
+  onSuccess?: () => void;
 };
 
-const TodoList = ({ todos, loading }: ProsType) => {
+const TodoList = ({ todos, loading, onSuccess }: ProsType) => {
   return (
     <>
       {loading ? (
@@ -44,7 +45,10 @@ const TodoList = ({ todos, loading }: ProsType) => {
                       </div>
                     </div>
                     <div className="left pl-5">
-                      <DropdownMenuWithSubMenu />
+                      <DropdownMenuWithSubMenu
+                        todo={todo}
+                        onSuccess={onSuccess}
+                      />
                     </div>
                   </div>
                   <Separator className="my-2" />

@@ -56,7 +56,7 @@ const Dashborord = () => {
       <div className="sidebar fixed w-fit right-0 top-1/2 z-20 h-1/2 bg-accent/40 -translate-y-1/2 rounded-l-lg py-2 px-4">
         <ul className="flex flex-col gap-3">
           <li>
-            <AddNewTask onSuccess={refetch} />
+            <AddNewTask onSuccess={refetch} mode="create" />
           </li>
           <li>
             <Button variant="destructive" size="sm">
@@ -77,7 +77,7 @@ const Dashborord = () => {
         </CardHeader>
         <CardContent className="py-0">
           <ScrollArea className="h-[calc(100vh-16rem)] w-full" dir="rtl">
-            <TodoList todos={todos} loading={loading} />
+            <TodoList todos={todos} loading={loading} onSuccess={refetch} />
           </ScrollArea>
         </CardContent>
       </Card>

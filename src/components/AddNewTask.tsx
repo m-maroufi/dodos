@@ -36,7 +36,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type z from "zod";
 import { addTodoFormShema } from "@/lib/validateShema";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
@@ -44,12 +44,10 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { sleep } from "@/lib/helper";
 import { createNewTask } from "@/supabase/api";
 import { toast } from "sonner";
-import { useNavigate } from "react-router";
 type Props = {
   onSuccess?: () => void;
 };
 const AddNewTask = ({ onSuccess }: Props) => {
-  const navigate = useNavigate();
   const [dialogStatus, setDialogStatus] = useState(false);
   const form = useForm<z.infer<typeof addTodoFormShema>>({
     resolver: zodResolver(addTodoFormShema),

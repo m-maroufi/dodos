@@ -2,7 +2,7 @@ import { getTodos } from "@/supabase/api";
 import { useEffect, useState } from "react";
 
 export type Todo = {
-  id: number;
+  id: string;
   title: string;
   description?: string;
   due_date: string; // یا Date یا number اگه timestamp ذخیره کردی
