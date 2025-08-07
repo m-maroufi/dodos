@@ -3,6 +3,7 @@ import { statusMap } from "@/lib/helper";
 import DropdownMenuWithSubMenu from "./customized/dropdown-menu/dropdown-menu-05";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
+import { CheckCircle2 } from "lucide-react";
 type ProsType = {
   todos: Todo[] | null;
   loading: boolean;
@@ -14,7 +15,7 @@ const TodoList = ({ todos, loading, onSuccess }: ProsType) => {
     <>
       {loading ? (
         <>
-          <h1>در حال بارگزاری ...</h1>
+          <h1 className="font-black text-2xl">در حال بروزرسانی لیست ...</h1>
         </>
       ) : (
         <ul className="px-4">
@@ -55,7 +56,15 @@ const TodoList = ({ todos, loading, onSuccess }: ProsType) => {
                 </li>
               ))}
             </>
-          ) : null}
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-4 py-10 text-center text-muted-foreground">
+              <CheckCircle2 size={60} className="text-green-500" />
+              <h3 className="text-xl font-semibold">
+                عالیه! تمام کارها انجام شده 🎉
+              </h3>
+              <p className="text-sm">هیچ کاری باقی نمونده. می‌تونی لم بدی 😌</p>
+            </div>
+          )}
         </ul>
       )}
     </>

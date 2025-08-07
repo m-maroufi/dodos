@@ -42,9 +42,20 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { editTodo } from "@/supabase/api";
+import { deleteTodo, editTodo } from "@/supabase/api";
 import { toast } from "sonner";
 import { sleep } from "@/lib/helper";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Props = {
   todo: Todo;
@@ -53,6 +64,8 @@ type Props = {
 
 export default function DropdownMenuWithSubMenu({ todo, onSuccess }: Props) {
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [opentDeleteDialog, setOpentDeleteDialog] = useState(false);
+
   const form = useForm<z.infer<typeof addTodoFormShema>>({
     resolver: zodResolver(addTodoFormShema),
     reValidateMode: "onChange",
@@ -87,6 +100,21 @@ export default function DropdownMenuWithSubMenu({ todo, onSuccess }: Props) {
     form.reset();
   };
 
+  const deleteHandler = async (id: string) => {
+    if (id) {
+      const result = await deleteTodo(id);
+      if (result.success) {
+        toast.success("عملیات موفق", {
+          description: "کار مورد نظر با موفقیت حذف شد.",
+          duration: 3000,
+        });
+        await sleep(400);
+        setOpentDeleteDialog(false);
+        onSuccess?.();
+      }
+    }
+  };
+
   return (
     <>
       <DropdownMenu dir="rtl">
@@ -107,7 +135,10 @@ export default function DropdownMenuWithSubMenu({ todo, onSuccess }: Props) {
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem className="text-destructive font-bold">
+          <DropdownMenuItem
+            className="text-destructive font-bold"
+            onClick={() => setOpentDeleteDialog(true)}
+          >
             حذف
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -292,6 +323,33 @@ export default function DropdownMenuWithSubMenu({ todo, onSuccess }: Props) {
           </Form>
         </DialogContent>
       </Dialog>
+
+      {/* delete alert dialog */}
+      <AlertDialog open={opentDeleteDialog} onOpenChange={setOpentDeleteDialog}>
+        <AlertDialogContent dir="rtl" className="text-start !justify-start">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-start">
+              آیا از حذف اطمینان دارید؟?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              کار با عنوان
+              <span className="font-bold text-lg text-destructive">
+                {todo.title}
+              </span>
+              حذف خواهد شد.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>انصراف</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteHandler(todo.id)}
+              className="bg-destructive font-semibold hover:bg-destructive/95"
+            >
+              تایید و حذف
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

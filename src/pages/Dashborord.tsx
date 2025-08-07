@@ -1,7 +1,7 @@
 import ComplexDropdownMenu from "@/components/customized/dropdown-menu/dropdown-menu-07";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { authContext } from "@/context/authContext";
-import { sleep, statusMap } from "@/lib/helper";
+import { sleep } from "@/lib/helper";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -10,9 +10,7 @@ import { CirclePlus } from "lucide-react";
 import AddNewTask from "@/components/AddNewTask";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import DropdownMenuWithSubMenu from "@/components/customized/dropdown-menu/dropdown-menu-05";
-import { useTodos, type Todo } from "@/hooks/useTodos";
+import { useTodos } from "@/hooks/useTodos";
 import TodoList from "@/components/TodoList";
 
 const Dashborord = () => {
@@ -56,7 +54,7 @@ const Dashborord = () => {
       <div className="sidebar fixed w-fit right-0 top-1/2 z-20 h-1/2 bg-accent/40 -translate-y-1/2 rounded-l-lg py-2 px-4">
         <ul className="flex flex-col gap-3">
           <li>
-            <AddNewTask onSuccess={refetch} mode="create" />
+            <AddNewTask onSuccess={refetch} />
           </li>
           <li>
             <Button variant="destructive" size="sm">

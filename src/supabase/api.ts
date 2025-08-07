@@ -106,3 +106,34 @@ export const editTodo = async (updates: TodoUpdate): Promise<TaskResult> => {
     return { success: false, error: "عملیات با شکست مواجه شد" };
   }
 };
+export const deleteTodo = async (todoId: string): Promise<TaskResult> => {
+  try {
+    // گرفتن اطلاعات کاربر
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return { success: false, error: "کاربر احراز نشده است" };
+    }
+
+    // حذف todo فقط اگر متعلق به کاربر باشد
+    const { error, data } = await supabase
+      .from("todos")
+      .delete()
+      .eq("id", todoId)
+      .eq("user_id", user.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("خطا در حذف:", error);
+      return { success: false, error: "حذف با خطا مواجه شد" };
+    }
+
+    return { success: true, data };
+  } catch (err) {
+    return { success: false, error: "عملیات با شکست مواجه شد" };
+  }
+};
