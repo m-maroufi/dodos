@@ -227,11 +227,15 @@ export default function DropdownMenuWithSubMenu({ todo, onSuccess }: Props) {
                       <FormLabel>تاریخ انجام</FormLabel>
                       <DatePicker
                         format="DD - MMMM YYYY"
-                        minDate={new Date()}
+                        minDate={
+                          new Date(new Date().setDate(new Date().getDate() - 1))
+                        }
                         value={field.value}
                         onChange={(date) => {
                           if (date) {
-                            const timestamp = date.toDate().getTime(); // تبدیل به timestamp
+                            const d = date.toDate();
+                            d.setHours(0, 0, 0, 0); // صفر کردن ساعت، دقیقه، ثانیه و میلی‌ثانیه
+                            const timestamp = d.getTime();
                             field.onChange(timestamp);
                           } else {
                             field.onChange(undefined);
@@ -330,8 +334,9 @@ export default function DropdownMenuWithSubMenu({ todo, onSuccess }: Props) {
             </AlertDialogTitle>
             <AlertDialogDescription>
               کار با عنوان
-              <span className="font-bold text-lg text-destructive">
-                {todo.title}
+              <span className="font-bold text-lg text-destructive px-2">
+                {" "}
+                {todo.title}{" "}
               </span>
               حذف خواهد شد.
             </AlertDialogDescription>
