@@ -9,6 +9,7 @@ import AuthContextProvider from "./context/authContext";
 import { Toaster } from "sonner";
 import { DateTimeDisplay } from "./components/DateTimeDisplay";
 import PageTransition from "./components/PageTranstion";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const location = useLocation();
@@ -38,7 +39,14 @@ function App() {
               <Route path="/" element={<Login />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/dashboard" element={<Dashborord />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashborord />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </PageTransition>
         </AnimatePresence>
