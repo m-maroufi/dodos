@@ -59,12 +59,13 @@ function Login() {
         navigate("/dashboard");
         return;
       }
-      if (result.code) {
+      if (result.code == 400) {
         form.setError("email", {
           message: "کاربری با این ایمیل ثبت نام نشده است ، لطفا ثبت نام کنید.",
         });
         return;
       }
+      throw new Error(result.error || "ورود ناموفق بود");
     } catch (error) {
       toast.error("ورود ناموفق بود 😞", {
         description: "لطفا اطلاعات خود را صحیح وارد کنید!.",
