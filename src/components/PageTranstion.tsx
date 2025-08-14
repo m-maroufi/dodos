@@ -21,11 +21,14 @@ const pageVariants = {
 
 export default function PageTransition({
   children,
+  path,
 }: {
   children: React.ReactNode;
+  path?: any;
 }) {
   return (
     <motion.div
+      key={path}
       variants={pageVariants}
       initial="initial"
       animate="animate"

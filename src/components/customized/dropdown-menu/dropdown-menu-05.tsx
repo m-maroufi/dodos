@@ -38,7 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -71,7 +71,7 @@ export default function DropdownMenuWithSubMenu({ todo, onSuccess }: Props) {
     defaultValues: {
       title: todo.title || "",
       description: todo.description || "",
-      due_date: Number(todo.due_date) || Date.now(),
+      due_date: todo.due_date ? new Date(todo.due_date).getTime() : Date.now(),
       priority: (todo.priority as "low" | "medium" | "high") || "low",
       status: (todo.status as "pending" | "doing" | "done") || "pending",
     },
@@ -80,8 +80,6 @@ export default function DropdownMenuWithSubMenu({ todo, onSuccess }: Props) {
   const onSubmitHandler = async (value: z.infer<typeof addTodoFormShema>) => {
     const updateData = { ...value, id: todo.id };
     const result = await editTodo(updateData);
-    console.log("drop", result);
-
     if (result.success) {
       toast.success("عملیات موفقیت آمیز", {
         description: "کار جدید با موفقیت افزوده شد",
@@ -228,9 +226,9 @@ export default function DropdownMenuWithSubMenu({ todo, onSuccess }: Props) {
                     <FormItem>
                       <FormLabel>تاریخ انجام</FormLabel>
                       <DatePicker
-                        format="DD - MMMM  YYYY"
+                        format="DD - MMMM YYYY"
                         minDate={new Date()}
-                        value={field.value ? new Date(field.value) : ""}
+                        value={field.value}
                         onChange={(date) => {
                           if (date) {
                             const timestamp = date.toDate().getTime(); // تبدیل به timestamp

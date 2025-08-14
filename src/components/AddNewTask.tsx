@@ -61,8 +61,6 @@ const AddNewTask = ({ onSuccess }: Props) => {
   const onSubmitHandler = async (value: z.infer<typeof addTodoFormShema>) => {
     await sleep(500);
     const result = await createNewTask(value);
-    console.log(result);
-
     if (result.success) {
       toast.success("عملیات موفقیت آمیز", {
         description: "کار جدید با موفقیت افزوده شد",

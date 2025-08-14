@@ -26,8 +26,6 @@ export const createNewTask = async (
       .from("todos")
       .insert([normalizedTodo]);
     if (error) {
-      console.log(error);
-
       throw new Error(error.message);
     }
     return { success: true, data: data };
@@ -52,7 +50,6 @@ export const getTodos = async (
     }
 
     let query = supabase.from("todos").select("*").eq("user_id", user.id);
-    console.log("Filter params:", { status, priority, date });
     // اگر وضعیت مشخص شده غیر از "all" بود، فیلترش کن
     if (status !== "all") {
       query = query.eq("status", status);
@@ -116,7 +113,6 @@ export const editTodo = async (updates: TodoUpdate): Promise<TaskResult> => {
       .single();
 
     if (error) {
-      console.log("api", error);
       return { success: false, error: "خطا در عملیات" };
     }
 

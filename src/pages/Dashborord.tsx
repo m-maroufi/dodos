@@ -31,9 +31,6 @@ const Dashborord = () => {
     dateFilter,
     dateFiltering,
   } = useTodos();
-  useEffect(() => {
-    console.log("todos updated", todos);
-  }, [todos]);
   const navigate = useNavigate();
   const logOutHandler = async () => {
     const { sucsses } = await signOut();

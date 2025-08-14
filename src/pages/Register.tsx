@@ -61,7 +61,12 @@ function Register() {
         return;
       } else {
         console.error("Registration failed:", result.error);
-        throw new Error("خطا در ثبت اطلاعات رخ داد.");
+        if (result.code) {
+          form.setError("email", {
+            type: "register",
+            message: "ایمیل وارد شده تکراری است ، لطفا به صفحه ورود بروید!",
+          });
+        }
       }
       // Handle errors here
     } catch (error) {

@@ -15,7 +15,6 @@ export const DateTimeDisplay = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const current = dayjs.tz(new Date(), "Asia/Tehran");
-      console.log("ISO:", current.toISOString());
       setNow(current);
     }, 1000);
     return () => clearInterval(interval);

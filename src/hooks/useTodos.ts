@@ -30,7 +30,6 @@ export const useTodos = () => {
     const result = await getTodos(statusFilter, priorityFilter, dateFilter);
 
     if (result.success) {
-      console.log("refetch", result.data);
       setTodos(result.data ? [...result.data] : []);
     } else {
       setError(result.error);

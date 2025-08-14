@@ -59,7 +59,12 @@ function Login() {
         navigate("/dashboard");
         return;
       }
-      throw new Error("خطا در ورود!");
+      if (result.code) {
+        form.setError("email", {
+          message: "کاربری با این ایمیل ثبت نام نشده است ، لطفا ثبت نام کنید.",
+        });
+        return;
+      }
     } catch (error) {
       toast.error("ورود ناموفق بود 😞", {
         description: "لطفا اطلاعات خود را صحیح وارد کنید!.",

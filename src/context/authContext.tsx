@@ -2,7 +2,9 @@ import { supabase } from "@/supabase/supabaseClient";
 import type { Session } from "@supabase/supabase-js";
 import { createContext, useEffect, useState } from "react";
 
-type AuthResult = { sucsses: true; data: any } | { sucsses: false; error: any };
+type AuthResult =
+  | { sucsses: true; data: any }
+  | { sucsses: false; error: any; code?: number };
 type AuthContextType = {
   session: Session | null; // می‌تونی اینو دقیق‌تر تعریف کنی اگه ساختار session مشخصه
   signUp: (payload: PayloadType) => Promise<AuthResult>;
@@ -52,6 +54,7 @@ export default function AuthContextProvider({
       } else if (error.status === 422) {
         return {
           sucsses: false,
+          code: error.status,
           error: "کاربری با این ایمیل قبلا ثبت نام شده است.",
         };
       } else {
@@ -72,6 +75,7 @@ export default function AuthContextProvider({
         console.error("Bad request:", error.message);
         return {
           sucsses: false,
+          code: error.status,
           error: "کاربری با این مشخصات یافت نشد",
         };
       } else {
@@ -108,7 +112,6 @@ export default function AuthContextProvider({
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
-    console.log(session);
   }, []);
 
   return (
